@@ -23,12 +23,9 @@ app.get('/api/notes', (req, res) => {
   }
 });
 
-app.get('/api/notes/:id', (req, res)=>{
-  const myNote = data.find(element => {
-    return element.id == req.params.id ;
-  });
-
-  res.json(myNote);
+app.get('/api/notes/:id', (req, res) => {
+  const note = data.find( element => element.id === Number(req.params.id) );
+  res.json(note);
 
 });
 
