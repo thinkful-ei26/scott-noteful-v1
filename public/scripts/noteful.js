@@ -51,7 +51,7 @@ const noteful = (function () {
   }
 
   function handleNoteSearchSubmit() {
-    $('.js-notes-search-form').on('submit', event => {
+    $('.js-notes-search-form').on('keyup', event => {
       event.preventDefault();
 
       const searchTerm = $('.js-note-search-entry').val();
@@ -88,7 +88,7 @@ const noteful = (function () {
       event.preventDefault();
 
       console.log('Delete Note, coming soon...');
-      
+
     });
   }
 
