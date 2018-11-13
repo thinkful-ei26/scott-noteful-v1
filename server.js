@@ -29,11 +29,22 @@ app.get('/api/notes', (req, res, next) => {
   });
 });
 
-app.get('/api/notes/:id', (req, res) => {
-  const note = data.find( element => element.id === Number(req.params.id) );
-  res.json(note);
+app.get('/api/notes/:id', (req, res, next) => {
+  const id = Number(req.params.id);
+  notes.find(id, (err, list) => {
+    if (err) {
+      return next(err); // goes to error handler
+    }
+    res.json(list); // responds with filtered array
+  });
 
 });
+
+// app.get('/api/notes/:id', (req, res) => {
+//   const note = data.find( element => element.id === Number(req.params.id) );
+//   res.json(note);
+//
+// });
 
 // app.get('/boom', (req, res, next) => {
 //   throw new Error('Boom!!');
