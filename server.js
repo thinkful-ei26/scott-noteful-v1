@@ -1,7 +1,12 @@
 'use strict';
 
-// Load array of notes
+
+// Simple In-Memory Database
 const data = require('./db/notes');
+
+const simDB = require('./db/simDB');
+const notes = simDB.initialize(data);
+
 const logger = require('./middleware/logger');
 const { PORT } = require('./config');
 
@@ -13,14 +18,15 @@ const app = express();
 app.use(logger);
 app.use(express.static('public'));
 
-app.get('/api/notes', (req, res) => {
+app.get('/api/notes', (req, res, next) => {
+
   const { searchTerm } = req.query;
-  if (searchTerm) {
-    const searchResult = data.filter(item => item.title.includes(searchTerm));
-    res.json(searchResult);
-  }else{
-    res.json(data);
-  }
+  notes.filter(searchTerm, (err, list) => {
+    if (err) {
+      return next(err); // goes to error handler
+    }
+    res.json(list); // responds with filtered array
+  });
 });
 
 app.get('/api/notes/:id', (req, res) => {
