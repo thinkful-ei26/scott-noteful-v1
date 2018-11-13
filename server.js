@@ -40,12 +40,6 @@ app.get('/api/notes/:id', (req, res, next) => {
   });
 });
 
-// app.get('/api/notes/:id', (req, res) => {
-//   const note = data.find( element => element.id === Number(req.params.id) );
-//   res.json(note);
-//
-// });
-
 app.put('/api/notes/:id', (req, res, next) => {
   const id = req.params.id;
 
@@ -71,9 +65,6 @@ app.put('/api/notes/:id', (req, res, next) => {
   });
 });
 
-// app.get('/boom', (req, res, next) => {
-//   throw new Error('Boom!!');
-// });
 
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
