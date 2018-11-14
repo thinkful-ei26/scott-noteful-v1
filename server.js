@@ -14,13 +14,13 @@ console.log('Hello Noteful!');
 
 // INSERT EXPRESS APP CODE HERE...
 const express = require('express');
+const morgan = require('morgan');
 const app = express();
-app.use(logger);
+app.use(morgan('dev'));
 app.use(express.static('public'));
 app.use(express.json());
 
 app.get('/api/notes', (req, res, next) => {
-
   const { searchTerm } = req.query;
   notes.filter(searchTerm, (err, list) => {
     if (err) {
