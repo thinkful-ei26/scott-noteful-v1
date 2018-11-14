@@ -76,6 +76,16 @@ router.post('/', (req, res, next) => {
   });
 });
 
+router.delete('/:id', (req, res, next) => {
+  const id = Number(req.params.id);
+  notes.delete(id, (err, list) => {
+    if (err) {
+      return next(err); // goes to error handler
+    }
+    res.status(204).end();
+  });
+});
+
 
 router.use(function (req, res, next) {
   var err = new Error('Not Found');

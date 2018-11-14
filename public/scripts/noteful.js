@@ -121,7 +121,7 @@ const noteful = (function () {
 
       const noteId = getNoteIdFromElement(event.currentTarget);
 
-      api.remove(noteId, () => {
+      api.delete(noteId, () => {
 
         api.search(store.currentSearchTerm, searchResponse => {
           store.notes = searchResponse;

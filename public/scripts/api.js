@@ -46,7 +46,7 @@ const api = {
     });
   },
 
-  remove: function (id, callback) {
+  delete: function (id, callback) {
     return $.ajax({
       type: 'DELETE',
       url: `/api/notes/${id}`,
