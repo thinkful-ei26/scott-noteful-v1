@@ -9,23 +9,43 @@ const notes = simDB.initialize(data);
 
 router.get('/', (req, res, next) => {
   const { searchTerm } = req.query;
-  notes.filter(searchTerm, (err, list) => {
-    if (err) {
-      return next(err); // goes to error handler
-    }
-    res.json(list); // responds with filtered array
-  });
+
+  notes.filter(searchTerm)
+    .then(list => res.json(list))
+    .catch(err => next(err));
+
+
+  // notes.filter(searchTerm, (err, list) => {
+  //   if (err) {
+  //     return next(err); // goes to error handler
+  //   }
+  //   res.json(list); // responds with filtered array
+  // });
 });
 
 router.get('/:id', (req, res, next) => {
   const id = Number(req.params.id);
-  notes.find(id, (err, list) => {
-    if (err) {
-      return next(err); // goes to error handler
-    }
-    res.json(list); // responds with filtered array
-  });
+  notes.find(id)
+    .then(item => {
+      if (item) {
+        res.json(item);
+      } else {
+        next();
+      }
+    })
+    .catch(err => next(err));
 });
+
+
+
+
+// notes.find(id, (err, list) => {
+//   if (err) {
+//     return next(err); // goes to error handler
+//   }
+//   res.json(list); // responds with filtered array
+// });
+//});
 
 router.put('/:id', (req, res, next) => {
   const id = req.params.id;
@@ -40,16 +60,30 @@ router.put('/:id', (req, res, next) => {
     }
   });
 
-  notes.update(id, updateObj, (err, item) => {
-    if (err) {
-      return next(err);
-    }
-    if (item) {
-      res.json(item);
-    } else {
-      next();
-    }
-  });
+  notes.update(id, updateObj)
+    .then(item => {
+      if (item) {
+        res.json(item);
+      } else {
+        next();
+      }
+    })
+    .catch(err => next(err));
+
+
+
+
+
+
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //   if (item) {
+  //     res.json(item);
+  //   } else {
+  //     next();
+  //   }
+  // });
 });
 
 // Post (insert) an item
@@ -64,26 +98,46 @@ router.post('/', (req, res, next) => {
     return next(err);
   }
 
-  notes.create(newItem, (err, item) => {
-    if (err) {
-      return next(err);
-    }
-    if (item) {
-      res.location(`http://${req.headers.host}/notes/${item.id}`).status(201).json(item);
-    } else {
-      next();
-    }
-  });
+  notes.create(newItem) //, (err, item) => {
+    .then(item => {
+      if (item) {
+        res.location(`http://${req.headers.host}/notes/${item.id}`)
+          .status(201).json(item);
+      } else {
+        next();
+      }
+    })
+    .catch(err => next(err));
+
+
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //   if (item) {
+  //     res.location(`http://${req.headers.host}/notes/${item.id}`).status(201).json(item);
+  //   } else {
+  //     next();
+  //   }
+  // });
 });
 
 router.delete('/:id', (req, res, next) => {
   const id = Number(req.params.id);
-  notes.delete(id, (err, list) => {
-    if (err) {
-      return next(err); // goes to error handler
-    }
-    res.status(204).end();
-  });
+
+  notes.delete(id) //, (err, list) => {
+    .then(item => {
+      if (item) {
+        res.status(204).end();
+      }
+    })
+    .catch(err => next(err));
+
+
+  //   if (err) {
+  //     return next(err); // goes to error handler
+  //   }
+  //   res.status(204).end();
+  // });
 });
 
 
