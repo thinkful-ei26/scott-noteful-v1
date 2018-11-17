@@ -54,11 +54,20 @@ router.put('/:id', (req, res, next) => {
   const updateObj = {};
   const updateFields = ['title', 'content'];
 
+
+
   updateFields.forEach(field => {
+
     if (field in req.body) {
       updateObj[field] = req.body[field];
     }
   });
+
+  if (!updateObj.title) {
+    const err = new Error('Missing `title` in request body');
+    err.status = 400;
+    return next(err);
+  }
 
   notes.update(id, updateObj)
     .then(item => {
@@ -69,12 +78,6 @@ router.put('/:id', (req, res, next) => {
       }
     })
     .catch(err => next(err));
-
-
-
-
-
-
   //   if (err) {
   //     return next(err);
   //   }
@@ -101,7 +104,7 @@ router.post('/', (req, res, next) => {
   notes.create(newItem) //, (err, item) => {
     .then(item => {
       if (item) {
-        res.location(`http://${req.headers.host}/notes/${item.id}`)
+        res.location(`http://${req.headers.host}/api/notes/${item.id}`)
           .status(201).json(item);
       } else {
         next();
